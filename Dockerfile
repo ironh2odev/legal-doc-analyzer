@@ -1,29 +1,24 @@
 FROM python:3.11-slim
 
-# Install required system packages for WeasyPrint
+# Install wkhtmltopdf dependencies
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    libffi-dev \
-    libpango1.0-0 \
-    libcairo2 \
-    libgdk-pixbuf2.0-0 \
-    libxml2 \
-    libxslt1.1 \
-    libjpeg62-turbo \
-    shared-mime-info \
-    fonts-liberation \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    wkhtmltopdf \
+    libxrender1 \
+    libxext6 \
+    libfontconfig1 \
+    && apt-get clean
 
-# Set working directory
+# Set work directory
 WORKDIR /app
 
-# Copy project files
+# Copy all project files
 COPY . .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port and run the app
+# Expose port
 EXPOSE 8000
+
+# Start app
 CMD ["uvicorn", "legal_doc_analyzer.app:app", "--host", "0.0.0.0", "--port", "8000"]
