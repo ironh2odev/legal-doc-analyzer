@@ -8,3 +8,4 @@ python-dotenv==1.0.1
 slowapi==0.1.8
 docx2txt==0.9
 transformers==4.51.3
+torch==2.2.2
