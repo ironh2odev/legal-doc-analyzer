@@ -6,3 +6,4 @@ fastapi==0.115.12
 uvicorn==0.34.2
 python-dotenv==1.0.1
 slowapi==0.1.8
+docx2txt==0.9
