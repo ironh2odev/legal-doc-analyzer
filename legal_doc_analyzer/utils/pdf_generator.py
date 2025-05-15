@@ -1,6 +1,6 @@
 # legal_doc_analyzer/utils/pdf_generator.py
 
-from weasyprint import HTML
+import pdfkit
 from jinja2 import Environment, FileSystemLoader
 import os
 from datetime import datetime
@@ -9,6 +9,10 @@ TEMPLATES_DIR = os.path.join(os.path.dirname(__file__), "templates")
 OUTPUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "output"))
 
 env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
+
+# 🧾 Ensure wkhtmltopdf is found on Render
+WKHTMLTOPDF_CMD = "/usr/local/bin/wkhtmltopdf"
+config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
 
 def generate_pdf(data: dict, mode: str = "single") -> str:
     os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -27,14 +31,13 @@ def generate_pdf(data: dict, mode: str = "single") -> str:
             template = env.get_template("report_template.html")
             html_out = template.render(data=data, generation_date=generation_date)
 
-        HTML(string=html_out).write_pdf(output_path)
+        # ✅ Generate PDF using pdfkit
+        pdfkit.from_string(html_out, output_path, configuration=config)
 
-        # Log confirmation
         if os.path.exists(output_path):
             print(f"✅ PDF written successfully to: {output_path}")
         else:
-            print(f"❌ PDF generation attempted but file not found: {output_path}")
-            raise FileNotFoundError(f"Generated file missing at {output_path}")
+            raise FileNotFoundError(f"PDF not found at: {output_path}")
 
         return output_path
 
