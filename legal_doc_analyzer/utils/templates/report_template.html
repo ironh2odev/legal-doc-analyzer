@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Legal Document Analysis Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 2em; color: #333; }
+        h1 { color: #003366; }
+        h2 { color: #003366; margin-top: 2em; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5em;
+            margin-bottom: 2em;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 0.7em;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f2f6;
+        }
+        .clause-table {
+            margin-bottom: 1.5em;
+        }
+        .footer {
+            margin-top: 3em;
+            font-size: 0.9em;
+            color: #666;
+            border-top: 1px solid #ccc;
+            padding-top: 1em;
+        }
+    </style>
+</head>
+<body>
+
+<h1>📑 Legal Document Analysis Report</h1>
+
+<h2>📋 Summary</h2>
+<table>
+    <tr><th>Total Clauses</th><td>{{ data.summary.total_clauses }}</td></tr>
+    <tr><th>Total Obligations</th><td>{{ data.summary.total_obligations }}</td></tr>
+    <tr><th>Missing Clauses</th><td>{{ data.summary.missing_clauses | join(', ') }}</td></tr>
+</table>
+
+<h2>📄 Clause Details</h2>
+{% for clause in data.details %}
+<table class="clause-table">
+    <tr><th>Clause</th><td>{{ clause.clause }}</td></tr>
+    <tr><th>Type</th><td>{{ clause.type }}</td></tr>
+    <tr><th>Risk</th><td>{{ clause.risk }}</td></tr>
+    <tr><th>Summary</th><td>{{ clause.summary }}</td></tr>
+    {% if clause.obligations %}
+    <tr>
+        <th>Obligations</th>
+        <td>
+            <ul>
+            {% for ob in clause.obligations %}
+                <li>{{ ob }}</li>
+            {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    {% endif %}
+</table>
+{% endfor %}
+
+<div class="footer">
+    📅 Report generated on: {{ generation_date }}
+</div>
+
+</body>
+</html>

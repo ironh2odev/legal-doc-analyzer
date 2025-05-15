@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+output/
+.env
+.venv/
+venv/
+
+# Streamlit Cache
+.streamlit/
+
+# MacOS metadata
+.DS_Store
+
+# VSCode settings
+.vscode/
+
+# Logs
+*.log
+
+# Don't track generated files
+legal_doc_analyzer/output
+test_docs/
